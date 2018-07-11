@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 
 var consts = require('../constants');
+var handlers = require('../middlewares/req-handlers')
+var userController = require('../controllers/user')
 
 router.get('/', function(req, res, next) {
     res.json({Apis: [
@@ -10,25 +12,21 @@ router.get('/', function(req, res, next) {
       ]});
   });
 
-/* GET books listing. */
-router.get('/users', function(req, res, next) {
-  res.json({books: [
-        {name: 'Applied Science 1'},
-        {name: 'Applied Science 2'}
-    ]});
-});
+/* GET user  details by id or by user model in body as json object*/
+router.get('/user/:id', handlers.asyncHandler(userController.getUserByID));
+router.post('/user', handlers.asyncHandler(userController.getUser));
 
-router.route('/login')
-// create a bear (accessed at POST http://localhost:8080/api/bears)
-    .post(function(req, res) {
+router.post('/login', handlers.asyncHandler(userController.loginUser));
 
-        var name = req.body.email;
-        var password = req.body.password;
+// router.route('/login').post(function(req, res) {
 
-        // call login function and get response token
-        res.json({
-            token : '123456'
-        })
-    });
+//         var name = req.body.email;
+//         var password = req.body.password;
+
+//         call login function and get response token
+//         res.json({
+//             token : '123456'
+//         })
+//     });
 
 module.exports = router;

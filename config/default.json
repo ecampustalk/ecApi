@@ -1,0 +1,16 @@
+{
+    "app":{
+        "port" : "8181",
+        "connectionString": "mongodb://shrikant:avinash@ds161346.mlab.com:61346/ec"        
+    },
+    "security":{
+        "jwt":{
+            "passphrase" : "avinash",
+            "expiryInMinutes" : 1
+        },
+        "publicApis" : [
+            "/api/user/login",
+            "/api/user/registration"
+        ]
+    }
+}

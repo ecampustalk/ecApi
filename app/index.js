@@ -2,14 +2,17 @@
 var express    = require('express');        // call express
 var app        = express();                 // define our app using express
 var bodyParser = require('body-parser');
+//process.env.NODE_ENV = "development"; //set to production for live
+var config = require('config');
+
 //var mongoose = require('mongoose');
-var middlewares = require('./middlewares/index')
+var middlewares = require('./middlewares/index');
 
 // configure app to use bodyParser()
 // this will let us get the data from a POST
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-var port = process.env.PORT || 8181;        // set our port
+var port = config.get('app.port');        // set our port
 
 var index = require('./routes/index');
 
