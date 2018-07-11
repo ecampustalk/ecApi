@@ -3,13 +3,17 @@ var router = express.Router();
 
 var consts = require('../constants');
 var handlers = require('../middlewares/req-handlers')
+var cacheMiddleware = require('../middlewares/cache')
 var userController = require('../controllers/user')
 
-router.get('/', function(req, res, next) {
-    res.json({Apis: [
-          {users: consts.getURL(req)+'/users'},
-          {students: consts.getURL(req)+'/students/'+consts.port}
-      ]});
+router.get('/',cacheMiddleware.cacheapi, function(req, res, next) {
+    var response = {Apis: [
+        {users: consts.getURL(req)+'/users'},
+        {students: consts.getURL(req)+'/students/'+consts.port}
+    ]};
+    
+    cacheMiddleware.fillcache(req,response);
+    res.json(response);
   });
 
 /* GET user  details by id or by user model in body as json object*/

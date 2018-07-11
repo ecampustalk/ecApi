@@ -12,6 +12,9 @@
             "/api/user/login",
             "/api/user/registration"
         ]
+    },
+    "performance":{
+        "cacheduration": 100
     }
 
 }
