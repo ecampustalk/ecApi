@@ -20,17 +20,8 @@ router.get('/',cacheMiddleware.cacheapi, function(req, res, next) {
 router.get('/user/:id', handlers.asyncHandler(userController.getUserByID));
 router.post('/user', handlers.asyncHandler(userController.getUser));
 
+
+// TODO : use mongoose validation to validate the input data from client
 router.post('/login', handlers.asyncHandler(userController.loginUser));
-
-// router.route('/login').post(function(req, res) {
-
-//         var name = req.body.email;
-//         var password = req.body.password;
-
-//         call login function and get response token
-//         res.json({
-//             token : '123456'
-//         })
-//     });
 
 module.exports = router;

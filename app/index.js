@@ -8,8 +8,7 @@ var config = require('config');
 //var mongoose = require('mongoose');
 var middlewares = require('./middlewares/index');
 
-// configure app to use bodyParser()
-// this will let us get the data from a POST
+// TODO : use session for security
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 var port = config.get('app.port');        // set our port

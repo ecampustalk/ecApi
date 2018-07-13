@@ -2,7 +2,7 @@ var jwt = require('jsonwebtoken');
 var config = require('config');
 
 var User = require('../models/user')
-var security = require('./security')
+var passphrase = config.get('security.jwt.passphrase');  
 
 module.exports.getUserByID = async function(req,res,next) {
     try {   
@@ -32,10 +32,7 @@ module.exports.loginUser = async function(req,res,next) {
         user = req.body;                
         const result = { "email": "shrikantgond@gmail.com" } //await User.findOne({email: user.email, password: user.password});
         if(result !== undefined && result !== null && result !== '')
-        {
-            //loginToken = security.getLoginToken(result._id,result.email);
-            //res.json({loginToken})
-            var passphrase = config.get('security.jwt.passphrase');  
+        {     
             jwt.sign(result, passphrase, function(err, token) {
                 if(err !== undefined || err !== null || err !== ''){
                     res.json(token);
