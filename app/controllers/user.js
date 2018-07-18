@@ -30,11 +30,12 @@ module.exports.getUser = async function(req,res,next) {
 module.exports.loginUser = async function(req,res,next) {
     try {
         user = req.body;                
-        const result = { "email": "shrikantgond@gmail.com" } //await User.findOne({email: user.email, password: user.password});
+        const result = { "email": "shrikantgond@gmail.com" } //await User.findOne({email: user.email, password: user.password});        
         if(result !== undefined && result !== null && result !== '')
-        {     
-            jwt.sign(result, passphrase, function(err, token) {
-                if(err !== undefined || err !== null || err !== ''){
+        {            
+            const data = {"user":result, "session": req.session.id }     
+            jwt.sign(data, passphrase, function(err, token) {
+                if(err == undefined || err == null || err == ''){
                     res.json(token);
                 }
                 else{

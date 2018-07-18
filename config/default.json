@@ -1,7 +1,8 @@
 {
     "app":{
         "port" : "8181",
-        "connectionString": "mongodb://shrikant:avinash@ds161346.mlab.com:61346/ec"        
+        "connectionString": "mongodb://shrikant:avinash@ds161346.mlab.com:61346/ec",
+        "sessionSecret": "aarti"        
     },
     "security":{
         "jwt":{

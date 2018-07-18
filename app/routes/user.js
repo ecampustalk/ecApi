@@ -7,12 +7,15 @@ var cacheMiddleware = require('../middlewares/cache')
 var userController = require('../controllers/user')
 
 router.get('/',cacheMiddleware.cacheapi, function(req, res, next) {
+ 
+    req.session.userId = '2232323';
+
     var response = {Apis: [
         {users: consts.getURL(req)+'/users'},
         {students: consts.getURL(req)+'/students/'+consts.port}
     ]};
     
-    cacheMiddleware.fillcache(req,response);
+    // cacheMiddleware.fillcache(req,response);
     res.json(response);
   });
 

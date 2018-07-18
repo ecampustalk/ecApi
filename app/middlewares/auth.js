@@ -1,21 +1,56 @@
+var jwt = require('jsonwebtoken');
+
 var config = require('config');
 
 module.exports.isAuthenticated = function(req, res, next) {
-    // do any checks you want to in here
-    var token = req.headers.token; 
-    var reftoken = req.headers.reftoken; 
-    // CHECK THE USER STORED IN SESSION FOR A CUSTOM VARIABLE publicApis
-    // you can do this however you want with whatever variables you set up
+    
+    
+    // 1. check if the url is public
     var publicApis = config.get('security.publicApis');
     var isPublicApi = publicApis.indexOf(req.originalUrl);
-    if ((token !== '' && token !== undefined) || isPublicApi !== -1)
+    if(isPublicApi!==-1)
+    {
         return next();
-  
-     
-    // IF A USER ISN'T LOGGED IN, THEN REDIRECT THEM SOMEWHERE
-    res.status('401').send( {
-        status: 401
-      , url: req.originalUrl 
-    });
+    }
+    
+    // do any checks you want to in here
+    var token = req.headers.token;  
+    // CHECK THE USER STORED IN SESSION FOR A CUSTOM VARIABLE publicApis
+    // you can do this however you want with whatever variables you set up    
+    var passphrase = config.get('security.jwt.passphrase');  
+        
+    if ((token !== '' && token !== undefined && token != null))
+    {
+        jwt.verify(token,passphrase, function(err, data) {
+            
+            if(err == undefined || err == null || err == ''){
+                //console.log(decoded);
+                // TODO : compare user details 
+                if(data.session!==req.session.id){
+                    return next();
+                }
+                else{
+                    res.status('401').send( {
+                        status: 401
+                    , url: req.originalUrl 
+                    });
+                }
+            }
+            else{
+                res.status('401').send( {
+                    status: 401
+                , url: req.originalUrl 
+                });
+            }
+          });
+    }
+    else{
+        // IF A USER ISN'T LOGGED IN, THEN REDIRECT THEM SOMEWHERE
+        res.status('401').send( {
+            status: 401
+        , url: req.originalUrl 
+        });
+    }    
+
   }
   

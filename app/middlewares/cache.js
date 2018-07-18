@@ -9,7 +9,7 @@ module.exports.cacheapi = function(req, res, next) {
     }
     else
     {
-        next();
+        return next();
     }
 }
 
