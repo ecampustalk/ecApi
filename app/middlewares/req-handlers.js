@@ -1,4 +1,4 @@
-module.exports.session_middleware = function(req, res, next){
+module.exports.session_invalid = function(req, res, next){
   if(!req.session){
     res.status('401').send( {
       status: 401

@@ -2,29 +2,28 @@ var express = require('express');
 var router = express.Router();
 
 var consts = require('../constants');
-var handlers = require('../middlewares/req-handlers')
-var cacheMiddleware = require('../middlewares/cache')
+var middlewares = require('../middlewares/index')
 var userController = require('../controllers/user')
 
-router.get('/',cacheMiddleware.cacheapi, function(req, res, next) {
+router.get('/',middlewares.mcache.cacheapi, function(req, res, next) {
  
-    req.session.userId = '2232323';
+    //req.session.userId = '2232323';
 
     var response = {Apis: [
         {users: consts.getURL(req)+'/users'},
         {students: consts.getURL(req)+'/students/'+consts.port}
     ]};
     
-    // cacheMiddleware.fillcache(req,response);
+    cacheMiddleware.fillcache(req,response);
     res.json(response);
   });
 
 /* GET user  details by id or by user model in body as json object*/
-router.get('/user/:id', handlers.asyncHandler(userController.getUserByID));
-router.post('/user', handlers.asyncHandler(userController.getUser));
+router.get('/user/:id', middlewares.handlers.asyncHandler(userController.getUserByID));
+router.post('/user', middlewares.handlers.asyncHandler(userController.getUser));
 
 
 // TODO : use mongoose validation to validate the input data from client
-router.post('/login', handlers.asyncHandler(userController.loginUser));
+router.post('/login', middlewares.handlers.asyncHandler(userController.loginUser));
 
 module.exports = router;
