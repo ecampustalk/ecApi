@@ -9,6 +9,7 @@
   "author": "Shrikant Gond",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^3.0.0",
     "body-parser": "^1.18.3",
     "config": "^1.30.0",
     "connect-mongodb-session": "^2.0.3",

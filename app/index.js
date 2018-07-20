@@ -8,6 +8,11 @@ var mongoose = require('mongoose');
 var config = require('config');
 var middlewares = require('./middlewares/index');
 
+mongoose.connect(config.get('app.connectionString'));
+  
+// var db = mongoose.connection;
+// db.useDb("sampleCollection");
+
 // TODO : use session for security
 app.set('trust proxy', 1) // trust first proxy
 app.use(middlewares.sessions.session)

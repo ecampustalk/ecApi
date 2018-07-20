@@ -5,7 +5,9 @@ var Schema       = mongoose.Schema;
 // http://mongoosejs.com/docs/validation.html
 
 var UserSchema   = new Schema({
-    name: String
+    name: String,
+    email: String,
+    password: String    
 });
 
 

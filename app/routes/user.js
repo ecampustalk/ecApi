@@ -7,8 +7,6 @@ var userController = require('../controllers/user')
 
 router.get('/',middlewares.mcache.cacheapi, function(req, res, next) {
  
-    //req.session.userId = '2232323';
-
     var response = {Apis: [
         {users: consts.getURL(req)+'/users'},
         {students: consts.getURL(req)+'/students/'+consts.port}
@@ -25,5 +23,7 @@ router.post('/user', middlewares.handlers.asyncHandler(userController.getUser));
 
 // TODO : use mongoose validation to validate the input data from client
 router.post('/login', middlewares.handlers.asyncHandler(userController.loginUser));
+router.post('/register', middlewares.handlers.asyncHandler(userController.registerUser));
+router.get('/logout', middlewares.handlers.asyncHandler(userController.logoutUser));
 
 module.exports = router;

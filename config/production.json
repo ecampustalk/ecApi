@@ -11,7 +11,7 @@
         },
         "publicApis" : [
             "/api/user/login",
-            "/api/user/registration"
+            "/api/user/register"
         ]
     },
     "performance":{

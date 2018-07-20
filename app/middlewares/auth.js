@@ -14,35 +14,12 @@ module.exports.isAuthenticated = function(req, res, next) {
     }
     
     // do any checks you want to in here
-    var token = req.headers.token;  
     // CHECK THE USER STORED IN SESSION FOR A CUSTOM VARIABLE publicApis
-    // you can do this however you want with whatever variables you set up    
-    var passphrase = config.get('security.jwt.passphrase');  
+    // you can do this however you want with whatever variables you set up     
         
-    if ((token !== '' && token !== undefined && token != null))
+    if ((req.session.userinfo !== '' && req.session.userinfo !== undefined && req.session.userinfo != null))
     {
-        jwt.verify(token,passphrase, function(err, data) {
-            
-            if(err == undefined || err == null || err == ''){
-                //console.log(decoded);
-                // TODO : compare user details 
-                if(data.session!==req.session.id){
-                    return next();
-                }
-                else{
-                    res.status('401').send( {
-                        status: 401
-                    , url: req.originalUrl 
-                    });
-                }
-            }
-            else{
-                res.status('401').send( {
-                    status: 401
-                , url: req.originalUrl 
-                });
-            }
-          });
+        return next();
     }
     else{
         // IF A USER ISN'T LOGGED IN, THEN REDIRECT THEM SOMEWHERE
