@@ -11,6 +11,6 @@ var mongoStore = new MongoDBStore({
  module.exports.session =  session({
     secret: config.get('app.sessionSecret'),
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
     store: mongoStore
   });

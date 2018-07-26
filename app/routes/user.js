@@ -1,29 +1,34 @@
 var express = require('express');
 var router = express.Router();
 
-var consts = require('../constants');
 var middlewares = require('../middlewares/index')
 var userController = require('../controllers/user')
 
-router.get('/',middlewares.mcache.cacheapi, function(req, res, next) {
- 
-    var response = {Apis: [
-        {users: consts.getURL(req)+'/users'},
-        {students: consts.getURL(req)+'/students/'+consts.port}
-    ]};
-    
-    cacheMiddleware.fillcache(req,response);
-    res.json(response);
-  });
+// get routes
+router.get('/getuser/:id', middlewares.handlers.asyncHandler(userController.getUserByID));
+//router.post('/getuser', middlewares.handlers.asyncHandler(userController.getUsers));
 
-/* GET user  details by id or by user model in body as json object*/
-router.get('/user/:id', middlewares.handlers.asyncHandler(userController.getUserByID));
-router.post('/user', middlewares.handlers.asyncHandler(userController.getUser));
+router.post('/getusers', middlewares.handlers.asyncHandler(userController.getUsers));
+router.get('/getuserrole/:id', middlewares.handlers.not_implemented);
+router.get('/getuserroles', middlewares.handlers.not_implemented);
 
+// update routes
+router.get('/updateusers', middlewares.handlers.not_implemented);
+router.get('/updateroles', middlewares.handlers.not_implemented);
 
+// add routes
+router.get('/addusers', middlewares.handlers.not_implemented);
+router.get('/addroles', middlewares.handlers.not_implemented);
+
+// add routes
+router.get('/deleteusers', middlewares.handlers.not_implemented);
+router.get('/deleteroles', middlewares.handlers.not_implemented);
+
+// custom routes
 // TODO : use mongoose validation to validate the input data from client
 router.post('/login', middlewares.handlers.asyncHandler(userController.loginUser));
 router.post('/register', middlewares.handlers.asyncHandler(userController.registerUser));
-router.get('/logout', middlewares.handlers.asyncHandler(userController.logoutUser));
+router.post('/logout', userController.logoutUser);
+
 
 module.exports = router;

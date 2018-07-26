@@ -17,16 +17,13 @@ module.exports.isAuthenticated = function(req, res, next) {
     // CHECK THE USER STORED IN SESSION FOR A CUSTOM VARIABLE publicApis
     // you can do this however you want with whatever variables you set up     
         
-    if ((req.session.userinfo !== '' && req.session.userinfo !== undefined && req.session.userinfo != null))
+    if ((req.session!== undefined && req.session.userinfo !== '' && req.session.userinfo !== undefined && req.session.userinfo != null))
     {
         return next();
     }
     else{
         // IF A USER ISN'T LOGGED IN, THEN REDIRECT THEM SOMEWHERE
-        res.status('401').send( {
-            status: 401
-        , url: req.originalUrl 
-        });
+        res.sendStatus('401');
     }    
 
   }

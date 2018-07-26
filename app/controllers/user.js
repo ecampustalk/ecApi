@@ -2,6 +2,7 @@ var jwt = require('jsonwebtoken');
 var config = require('config');
 
 var User = require('../models/user')
+var queries = require('../queries/index')
 var passphrase = config.get('security.jwt.passphrase');  
 
 module.exports.getUserByID = async function(req,res,next) {
@@ -11,18 +12,18 @@ module.exports.getUserByID = async function(req,res,next) {
         if(id == null || id == undefined)
             return res.sendStatus(400);
         
-        const result = await User.findOne({_id:id},{password: 0});
-        res.json(result);        
+        const result = await User.findOne(queries.common.getbyid(id)).select(queries.user.getbyid_select());
+        return res.json(result);        
     } catch (error) {
         next(error) 
     }    
 }
 
-module.exports.getUser = async function(req,res,next) {
+module.exports.getUsers = async function(req,res,next) {
     try {  
         user = req.body;      
-        const result = await User.findOne(user);
-        res.json(result);        
+        const result = await User.find(user);
+        return res.json(result);        
     } catch (error) {        
         next(error) 
     }    
@@ -34,7 +35,7 @@ module.exports.getUser = async function(req,res,next) {
 module.exports.loginUser = async function(req,res,next) {
     try {
 
-        if(req.session.userinfo!==null || req.session.userinfo !==undefined)
+        if(req.session!== undefined && req.session.userinfo!==null && req.session.userinfo !==undefined)
             return res.sendStatus(200);
 
         userdata = req.body;   
@@ -50,7 +51,7 @@ module.exports.loginUser = async function(req,res,next) {
             return res.sendStatus(200);
         }
         else{
-            res.sendStatus(401);
+            return res.sendStatus(401);
         }
                 
     } catch (error) {                
@@ -90,7 +91,7 @@ module.exports.registerUser = async function(req,res,next) {
                         });
                 }
                 else{
-                    res.sendStatus(409);
+                    return res.sendStatus(409);
                 }              
             }
           });        
@@ -101,7 +102,7 @@ module.exports.registerUser = async function(req,res,next) {
 }
 
 
-module.exports.logoutUser = async function(req,res,next) {
+module.exports.logoutUser = function(req,res,next) {
     try {
         if (req.session.userinfo) {
             // delete session object
@@ -109,10 +110,10 @@ module.exports.logoutUser = async function(req,res,next) {
               if(err) {
                 return next(err);
               } else {
-                return res.redirect('/login');
+                return res.sendStatus(200);
               }
             });
-          }                
+          }                         
     } catch (error) {                
         next(error) 
     }    
