@@ -7,6 +7,7 @@ var mongoose = require('mongoose');
 //process.env.NODE_ENV = "development"; //set to production for live
 var config = require('config');
 var middlewares = require('./middlewares/index');
+var index_route = require('./core/routes/index.route');
 
 mongoose.connect(config.get('app.connectionString'));
   
@@ -21,10 +22,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 var port = config.get('app.port');        // set our port
 
-var index = require('./routes/index');
-
 app.use(middlewares.handlers.session_invalid);
-app.use('/api',middlewares.auth.isAuthenticated, index);
+app.use('/api',middlewares.auth.isAuthenticated, index_route);
 
 // START THE SERVER
 // =============================================================================

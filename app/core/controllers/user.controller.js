@@ -1,8 +1,8 @@
 var jwt = require('jsonwebtoken');
 var config = require('config');
 
-var User = require('../models/user')
-var queries = require('../queries/index')
+var User = require('../models/user.model')
+var queries = require('../queries/index.query')
 var passphrase = config.get('security.jwt.passphrase');  
 
 module.exports.getUserByID = async function(req,res,next) {

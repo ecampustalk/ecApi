@@ -1,5 +1,3 @@
-var jwt = require('jsonwebtoken');
-
 var config = require('config');
 
 module.exports.isAuthenticated = function(req, res, next) {
