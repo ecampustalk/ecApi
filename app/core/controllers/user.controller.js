@@ -1,9 +1,7 @@
-var jwt = require('jsonwebtoken');
 var config = require('config');
 
 var User = require('../models/user.model')
 var queries = require('../queries/index.query')
-var passphrase = config.get('security.jwt.passphrase');  
 
 module.exports.getUserByID = async function(req,res,next) {
     try {   
@@ -35,6 +33,7 @@ module.exports.getUsers = async function(req,res,next) {
 module.exports.loginUser = async function(req,res,next) {
     try {
 
+        // user is already logged in
         if(req.session!== undefined && req.session.userinfo!==null && req.session.userinfo !==undefined)
             return res.sendStatus(200);
 
@@ -80,15 +79,22 @@ module.exports.registerUser = async function(req,res,next) {
                     user.name = userdata.name;
                     user.email = userdata.email;
                     user.password = userdata.password; 
-                    
-                    user.save(function(err) {
+                    //user = userdata;
+                    user.validate(function(err) {
                         if (err)
-                            throw err;
-                        // user data saved , now save session and send response
-                        req.session.userinfo = user;
-                        req.session.loggedinIP = req.ip;
-                        return res.sendStatus(201);
-                        });
+                            {return next(err);}
+                        user.save(function(err) {
+                            if (err)
+                                {return next(err);}
+                            // user data saved , now save session and send response
+                            req.session.userinfo = user;
+                            req.session.loggedinIP = req.ip;
+                            return res.sendStatus(201);
+                            });
+
+                    });
+
+                    
                 }
                 else{
                     return res.sendStatus(409);

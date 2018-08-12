@@ -10,9 +10,6 @@ var middlewares = require('./middlewares/index');
 var index_route = require('./core/routes/index.route');
 
 mongoose.connect(config.get('app.connectionString'));
-  
-// var db = mongoose.connection;
-// db.useDb("sampleCollection");
 
 // TODO : use session for security
 app.set('trust proxy', 1) // trust first proxy
